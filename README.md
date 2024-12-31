@@ -14,4 +14,4 @@ A simple New Year countdown app with features to share wishes with others. This 
 
 Let’s celebrate and make this year the best one yet!
 
-![Happy New Year](https://i.pinimg.com/originals/cd/56/e2/cd56e28fb9ada6520da7c4421ba92867.gif)
+<img src="https://i.pinimg.com/originals/cd/56/e2/cd56e28fb9ada6520da7c4421ba92867.gif" width="100%"></img>
