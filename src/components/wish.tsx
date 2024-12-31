@@ -92,7 +92,9 @@ export function GetWishModal({
     startTransition(async () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      setWish(wishes[Math.floor(Math.random() * wishes.length)]);
+      const filteredWishes = wishes.filter((item) => item.id !== wish?.id);
+
+      setWish(filteredWishes[Math.floor(Math.random() * wishes.length)]);
 
       const modal = document.getElementById("my_modal_4") as HTMLDialogElement;
       if (modal) {
