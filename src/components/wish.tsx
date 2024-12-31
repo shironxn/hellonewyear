@@ -25,7 +25,7 @@ function WishForm() {
           name="wish"
           value={wish}
           onChange={(e) => setWish(e.target.value)}
-          placeholder="Ex: I wish for adventures and memories in 2025!"
+          placeholder={`What's your ${new Date().getFullYear() + 1} wish?`}
         ></input>
       </label>
       <button
