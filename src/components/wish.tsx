@@ -10,7 +10,7 @@ function WishForm() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     startTransition(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       await createWish(wish);
       setWish("");
@@ -56,11 +56,11 @@ export function CreateWishModal() {
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">
-            Whats Your Wish for the New Year?
+            Share Your New Year Wish with Others
           </h3>
           <p className="py-4">
-            Dream big for the year ahead! Tell us your hopes and wishes, and
-            let’s make them come true together.
+            Let’s start the year with big dreams! Share your wishes and lets
+            inspire each other to make them happen.
           </p>
           <div className="modal-action mt-0">
             <WishForm />
@@ -90,7 +90,7 @@ export function GetWishModal({
 
   const openModal = () => {
     startTransition(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       setWish(wishes[Math.floor(Math.random() * wishes.length)]);
 
