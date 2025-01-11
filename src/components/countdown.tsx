@@ -12,9 +12,9 @@ const DAY = HOUR * 24;
 
 type Units = "Day" | "Hour" | "Minute" | "Second";
 
-const Countdown = () => {
+export const Countdown = () => {
   return (
-    <div className="mx-auto flex w-full items-center gap-4 text-neutral-content">
+    <div className="mx-auto w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4 text-neutral-content">
       <CountdownItem unit="Day" text="days" />
       <CountdownItem unit="Hour" text="hours" />
       <CountdownItem unit="Minute" text="minutes" />
@@ -27,11 +27,11 @@ const CountdownItem = ({ unit, text }: { unit: Units; text: string }) => {
   const { ref, time } = useTimer(unit);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-2 rounded-lg bg-neutral p-4 shadow-md">
+    <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-neutral p-4 shadow-md">
       <div className="relative w-full overflow-hidden text-center">
         <span
           ref={ref}
-          className="block text-5xl font-montserrat tabular-nums font-semibold md:text-7xl lg:text-8xl"
+          className="block text-5xl font-montserrat tabular-nums font-semibold md:text-6xl lg:text-7xl xl:text-8xl"
         >
           {time}
         </span>
@@ -40,11 +40,8 @@ const CountdownItem = ({ unit, text }: { unit: Units; text: string }) => {
         {text}
       </span>
     </div>
-
   );
 };
-
-export default Countdown;
 
 const useTimer = (unit: Units) => {
   const [ref, animate] = useAnimate();

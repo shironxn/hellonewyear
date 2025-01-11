@@ -50,7 +50,7 @@ export function CreateWishModal() {
 
   return (
     <div>
-      <button className="btn btn-outline" onClick={openModal}>
+      <button className="btn btn-outline w-full" onClick={openModal}>
         Share Your Wish
       </button>
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
@@ -106,7 +106,7 @@ export function GetWishModal({
   return (
     <div>
       <button
-        className="btn btn-outline"
+        className="btn btn-outline w-full"
         onClick={() => openModal()}
         disabled={isPending}
       >
