@@ -1,6 +1,6 @@
-import { Countdown } from "@/components/countdown";
 import { CreateWishModal, GetWishModal } from "@/components/wish";
 import { getWishes } from "./actions";
+import Countdown from "@/components/countdown";
 
 export default async function Home() {
   const data = await getWishes();
@@ -14,9 +14,9 @@ export default async function Home() {
   });
 
   return (
-    <div className="container flex flex-col items-center m-auto gap-8">
+    <div className="container flex flex-col items-center m-auto gap-8 font-poppins">
       <div className="flex justify-center flex-col gap-8">
-        <h1 className="text-5xl font-bold mb-4 text-center">
+        <h1 className="text-6xl font-medium mb-4 text-center">
           New Year Countdown {new Date().getFullYear() + 1}
         </h1>
         <Countdown />
