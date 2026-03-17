@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Geist } from "next/font/google";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/footer";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="nord">
+    <html lang="en" data-theme="nord" className={cn("font-sans", geist.variable)}>
       <body
         className={`${poppins.variable} ${montserrat.variable} antialiased flex flex-col items-center min-h-screen`}
       >
