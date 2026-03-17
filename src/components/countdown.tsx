@@ -2,6 +2,7 @@
 
 import { useAnimate } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const COUNTDOWN_FROM = `${new Date().getFullYear() + 1}-01-01`;
 
@@ -14,50 +15,51 @@ type Units = "Day" | "Hour" | "Minute" | "Second";
 
 export const Countdown = () => {
   return (
-    <div className="mx-auto w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4 text-neutral-content">
-      <CountdownItem unit="Day" text="days" />
-      <CountdownItem unit="Hour" text="hours" />
-      <CountdownItem unit="Minute" text="minutes" />
-      <CountdownItem unit="Second" text="seconds" />
+    <div className="mx-auto w-full grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
+      <CountdownItem unit="Day" label="Days" />
+      <CountdownItem unit="Hour" label="Hours" />
+      <CountdownItem unit="Minute" label="Minutes" />
+      <CountdownItem unit="Second" label="Seconds" />
     </div>
   );
 };
 
-const CountdownItem = ({ unit, text }: { unit: Units; text: string }) => {
+const CountdownItem = ({ unit, label }: { unit: Units; label: string }) => {
   const { ref, time } = useTimer(unit);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-lg bg-neutral p-4 shadow-md">
-      <div className="relative w-full overflow-hidden text-center">
-        <span
-          ref={ref}
-          className="block text-5xl font-montserrat tabular-nums font-semibold md:text-6xl lg:text-7xl xl:text-8xl"
-        >
-          {time}
+    <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300">
+      <CardContent className="flex flex-col items-center justify-center p-6 gap-2">
+        <div className="relative w-full overflow-hidden text-center h-16 md:h-20 flex items-center justify-center">
+          <span
+            ref={ref}
+            className="block text-4xl md:text-5xl lg:text-6xl font-bold tabular-nums tracking-tighter"
+          >
+            {time}
+          </span>
+        </div>
+        <span className="text-xs md:text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          {label}
         </span>
-      </div>
-      <span className="text-sm font-poppins font-medium uppercase tracking-wide">
-        {text}
-      </span>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
 const useTimer = (unit: Units) => {
   const [ref, animate] = useAnimate();
-
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const timeRef = useRef<string>("000");
-
-  const [time, setTime] = useState<string>("000");
+  const timeRef = useRef<string>("00");
+  const [time, setTime] = useState<string>("00");
 
   const calculateInitialTime = useCallback((): string => {
     const end = new Date(COUNTDOWN_FROM);
     const now = new Date();
     const distance = +end - +now;
 
-    let newTime = 0;
+    if (distance <= 0) return "00";
 
+    let newTime = 0;
     if (unit === "Day") {
       newTime = Math.floor(distance / DAY);
     } else if (unit === "Hour") {
@@ -68,7 +70,7 @@ const useTimer = (unit: Units) => {
       newTime = Math.floor((distance % MINUTE) / SECOND);
     }
 
-    return unit === "Day" ? `${newTime}`.padStart(3, "0") : `${newTime}`.padStart(2, "0");
+    return unit === "Day" ? `${newTime}`.padStart(2, "0") : `${newTime}`.padStart(2, "0");
   }, [unit]);
 
   const handleCountdown = useCallback(async () => {
@@ -77,18 +79,12 @@ const useTimer = (unit: Units) => {
     if (formattedTime !== timeRef.current) {
       await animate(
         ref.current,
-        { y: ["0%", "50%"], opacity: [1, 0] },
-        { duration: 0.35 }
+        { scale: [1, 1.1, 1], opacity: [1, 0.8, 1] },
+        { duration: 0.3 }
       );
 
       timeRef.current = formattedTime;
       setTime(formattedTime);
-
-      await animate(
-        ref.current,
-        { y: ["-50%", "0%"], opacity: [0, 1] },
-        { duration: 0.35 }
-      );
     }
   }, [animate, calculateInitialTime, ref]);
 
@@ -98,7 +94,6 @@ const useTimer = (unit: Units) => {
     setTime(initialTime);
 
     intervalRef.current = setInterval(handleCountdown, 1000);
-
     return () => clearInterval(intervalRef.current || undefined);
   }, [calculateInitialTime, handleCountdown]);
 

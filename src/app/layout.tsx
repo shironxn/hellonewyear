@@ -1,28 +1,22 @@
 import type { Metadata } from "next";
-import { Montserrat, Geist } from "next/font/google";
-import { Poppins } from "next/font/google";
+import { Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
-  weight: ["400", "600", "700"]
-})
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  weight: ["400", "600", "700"]
-})
+  weight: ["400", "600", "700"],
+});
 
 export const metadata: Metadata = {
-  title: "Hello New Year",
+  title: "New Year Countdown",
   description:
-    "Countdown to the New Year, share your wishes, and celebrate with friends in a fun, simple app!",
+    "A professional and minimalist New Year Countdown with communal wishes.",
 };
 
 export default function RootLayout({
@@ -31,11 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="nord" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className="antialiased" suppressHydrationWarning>
       <body
-        className={`${poppins.variable} ${montserrat.variable} antialiased flex flex-col items-center min-h-screen`}
+        className={cn(
+          inter.variable,
+          montserrat.variable,
+          "font-sans min-h-screen bg-background text-foreground flex flex-col items-center"
+        )}
       >
-        {children}
+        <ThemeProvider>
+          <div className="flex-1 w-full flex flex-col items-center">
+            {children}
+          </div>
+        </ThemeProvider>
         <Footer />
       </body>
     </html>
