@@ -6,7 +6,7 @@ A simple New Year countdown app with features to share wishes with others. This 
 
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
+- [shadcn](https://ui.shadcn.com/)
 - [Firebase](https://firebase.google.com/)
 - ❤️ With love and care!
 
