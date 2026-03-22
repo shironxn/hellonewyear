@@ -134,7 +134,7 @@ export function CreateWishModal() {
             Make a New Year Wish
           </DialogTitle>
           <DialogDescription className="text-base md:text-lg">
-            Let's start the year with big dreams! Your wish will inspire others.
+            Let&apos;s start the year with big dreams! Your wish will inspire others.
           </DialogDescription>
         </DialogHeader>
         <div className="py-6">
