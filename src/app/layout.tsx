@@ -13,9 +13,39 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "New Year Countdown",
+  title: "Hello New Year — Countdown & Wishes",
   description:
-    "A professional and minimalist New Year Countdown with communal wishes.",
+    "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
+  keywords: [
+    "new year",
+    "countdown",
+    "wishes",
+    "2027",
+    "hello new year",
+    "new year wishes",
+  ],
+  authors: [{ name: "Shiron", url: "https://www.shironstudio.com" }],
+  creator: "Shiron",
+  metadataBase: new URL("https://hellonewyear.vercel.app"),
+  openGraph: {
+    type: "website",
+    url: "https://hellonewyear.vercel.app",
+    title: "Hello New Year — Countdown & Wishes",
+    description:
+      "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
+    siteName: "Hello New Year",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hello New Year — Countdown & Wishes",
+    description:
+      "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
+    creator: "@shironxn",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
