@@ -8,7 +8,7 @@ export function Footer() {
       <aside>
         <p className="flex items-center justify-center gap-1">
           Copyright © {new Date().getFullYear()} - All right reserved by
-          shironxn, built with <Heart className="h-4 w-4 inline" />
+          shiron, built with <Heart className="h-4 w-4 inline" />
         </p>
       </aside>
     </footer>
