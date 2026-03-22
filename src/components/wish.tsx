@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import confetti from "canvas-confetti";
 import { Loader2, Send, Sparkles } from "lucide-react";
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useRef } from "react";
 
 function WishForm({ onSuccess }: { onSuccess: () => void }) {
   const [wish, setWish] = useState("");
@@ -104,13 +104,26 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const usedIdsRef = useRef<Set<string>>(new Set());
 
   const handleOpen = () => {
     if (wishes.length === 0) return;
 
     startTransition(async () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
-      const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+
+      let availableWishes = wishes.filter((w) => !usedIdsRef.current.has(w.id));
+
+      if (availableWishes.length === 0) {
+        usedIdsRef.current = new Set();
+        availableWishes = wishes;
+      }
+
+      const randomWish =
+        availableWishes[Math.floor(Math.random() * availableWishes.length)];
+
+      usedIdsRef.current.add(randomWish.id);
+
       setSelectedWish(randomWish);
       setOpen(true);
     });

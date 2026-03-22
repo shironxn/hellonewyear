@@ -1,7 +1,7 @@
 "use server";
 
-import { push, ref, set, serverTimestamp, get, query, limitToLast } from "firebase/database";
 import { database } from "@/lib/firebase";
+import { get, push, ref, serverTimestamp, set } from "firebase/database";
 import { revalidatePath } from "next/cache";
 
 export type Wish = {
@@ -33,8 +33,7 @@ export async function createWish(message: string) {
 export async function getWishes(): Promise<Wish[]> {
   try {
     const wishesRef = ref(database, "wishes");
-    const wishesQuery = query(wishesRef, limitToLast(20));
-    const snapshot = await get(wishesQuery);
+    const snapshot = await get(wishesRef);
 
     const wishes: Wish[] = [];
     snapshot.forEach((childSnapshot) => {
