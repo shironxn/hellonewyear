@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -31,6 +32,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider>
+          <Navbar />
           <div className="flex-1 w-full flex flex-col items-center">
             {children}
           </div>

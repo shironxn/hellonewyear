@@ -1,19 +1,15 @@
 import { CreateWishModal, GetWishModal } from "@/components/wish";
 import { getWishes } from "./actions";
 import { Countdown } from "@/components/countdown";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { WishCounter } from "@/components/wish-counter";
 
 export default async function Home() {
   const wishes = await getWishes();
 
   return (
-    <main className="min-h-screen bg-background text-foreground py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-background text-foreground py-8 sm:py-12 px-4 sm:px-6 lg:px-8 pt-16">
       <div className="max-w-6xl mx-auto flex flex-col items-center gap-16 md:gap-20">
         <header className="flex flex-col items-center text-center gap-3 sm:gap-4 w-full">
-          <div className="w-full flex justify-end">
-            <ThemeToggle />
-          </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
             New Year Countdown {new Date().getFullYear() + 1}
           </h1>
