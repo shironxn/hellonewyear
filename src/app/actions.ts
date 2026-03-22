@@ -35,7 +35,7 @@ export async function getWishes(): Promise<Wish[]> {
     const wishesRef = ref(database, "wishes");
     const wishesQuery = query(wishesRef, limitToLast(20));
     const snapshot = await get(wishesQuery);
-    
+
     const wishes: Wish[] = [];
     snapshot.forEach((childSnapshot) => {
       wishes.push({
@@ -44,9 +44,6 @@ export async function getWishes(): Promise<Wish[]> {
       });
     });
 
-    // Firebase limitToLast returns them in ascending order of timestamp, 
-    // but usually we want to see the latest ones or just a set for random picker.
-    // getWishes is used for the "Receive a Wish" logic which picks random from the list.
     return wishes;
   } catch (error) {
     console.error("Error fetching wishes:", error);

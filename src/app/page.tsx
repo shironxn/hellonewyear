@@ -2,6 +2,7 @@ import { CreateWishModal, GetWishModal } from "@/components/wish";
 import { getWishes } from "./actions";
 import { Countdown } from "@/components/countdown";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { WishCounter } from "@/components/wish-counter";
 
 export default async function Home() {
   const wishes = await getWishes();
@@ -25,6 +26,8 @@ export default async function Home() {
         <section className="w-full">
           <Countdown />
         </section>
+
+        <WishCounter />
 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
           <CreateWishModal />

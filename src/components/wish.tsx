@@ -1,7 +1,6 @@
 "use client";
 
 import { createWish, type Wish } from "@/app/actions";
-import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,11 +11,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import confetti from "canvas-confetti";
 import { Loader2, Send, Sparkles } from "lucide-react";
+import React, { useState, useTransition } from "react";
 
 function WishForm({ onSuccess }: { onSuccess: () => void }) {
   const [wish, setWish] = useState("");
   const [isPending, startTransition] = useTransition();
+
+  const fireConfetti = () => {
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ["#FFD700", "#C0C0C0", "#FFFFFF", "#FFE066", "#F0F0F0"],
+    });
+  };
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,6 +36,7 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
       const result = await createWish(wish);
       if (result?.success) {
         setWish("");
+        fireConfetti();
         onSuccess();
       }
     });
@@ -38,17 +49,17 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
         onChange={(e) => setWish(e.target.value)}
         placeholder={`What's your ${new Date().getFullYear() + 1} wish?`}
         disabled={isPending}
-        className="text-center md:text-left"
+        className="text-center md:text-left text-lg md:text-xl py-6"
       />
       <Button
         type="submit"
         disabled={isPending || !wish.trim()}
-        className="w-full"
+        className="w-full py-6 md:py-8 text-lg md:text-xl"
       >
         {isPending ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
         ) : (
-          <Send className="mr-2 h-4 w-4" />
+          <Send className="mr-2 h-5 w-5" />
         )}
         Share Your Wish
       </Button>
@@ -72,14 +83,16 @@ export function CreateWishModal() {
           </button>
         }
       />
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Make a New Year Wish</DialogTitle>
-          <DialogDescription>
-            Let’s start the year with big dreams! Your wish will inspire others.
+          <DialogTitle className="text-xl md:text-2xl">
+            Make a New Year Wish
+          </DialogTitle>
+          <DialogDescription className="text-base md:text-lg">
+            Let's start the year with big dreams! Your wish will inspire others.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
+        <div className="py-6">
           <WishForm onSuccess={() => setOpen(false)} />
         </div>
       </DialogContent>
@@ -96,7 +109,6 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
     if (wishes.length === 0) return;
 
     startTransition(async () => {
-      // Simulate some anticipation
       await new Promise((resolve) => setTimeout(resolve, 800));
       const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
       setSelectedWish(randomWish);
