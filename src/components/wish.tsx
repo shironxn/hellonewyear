@@ -12,12 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import confetti from "canvas-confetti";
-import { Loader2, Send, Sparkles } from "lucide-react";
+import { Heart, Loader2, Send, Sparkles } from "lucide-react";
 import React, { useState, useTransition, useRef } from "react";
 
 function WishForm({ onSuccess }: { onSuccess: () => void }) {
   const [wish, setWish] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const fireConfetti = () => {
     confetti({
@@ -37,9 +38,53 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
       if (result?.success) {
         setWish("");
         fireConfetti();
-        onSuccess();
+        setIsSuccess(true);
       }
     });
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-6 text-center">
+        <Heart className="h-20 w-20 text-primary" />
+        <div className="flex flex-col gap-2">
+          <p className="text-2xl md:text-3xl font-bold">
+            Your wish has been shared!
+          </p>
+          <p className="text-lg md:text-xl text-muted-foreground">
+            May your dreams come true in {new Date().getFullYear() + 1}
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          className="w-full py-6 text-lg md:text-xl"
+          onClick={() => {
+            const shareText = `I just made a wish for ${new Date().getFullYear() + 1}! ✨ Make yours too: https://hellonewyear.vercel.app`;
+
+            if (navigator.share) {
+              navigator.share({
+                title: "New Year Wish",
+                text: shareText,
+                url: "https://hellonewyear.vercel.app",
+              }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(shareText).then(() => {
+                alert("Copied to clipboard! 📋");
+              });
+            }
+          }}
+        >
+          <Send className="mr-2 h-5 w-5" />
+          Share to Friends
+        </Button>
+        <Button
+          className="w-full py-6 text-lg md:text-xl"
+          onClick={onSuccess}
+        >
+          Close
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -93,7 +138,7 @@ export function CreateWishModal() {
           </DialogDescription>
         </DialogHeader>
         <div className="py-6">
-          <WishForm onSuccess={() => setOpen(false)} />
+          <WishForm key={open ? "open" : "closed"} onSuccess={() => setOpen(false)} />
         </div>
       </DialogContent>
     </Dialog>
