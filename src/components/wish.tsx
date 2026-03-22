@@ -61,8 +61,8 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
           className="w-full py-6 text-lg md:text-xl"
           onClick={() => {
             const shareText = name
-              ? `${name} just made a wish for ${new Date().getFullYear() + 1}! Make yours too: https://hellonewyear.vercel.app`
-              : `I just made a wish for ${new Date().getFullYear() + 1}! Make yours too: https://hellonewyear.vercel.app`;
+              ? `${name} just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hellonewyear.vercel.app`
+              : `I just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hellonewyear.vercel.app`;
 
             if (navigator.share) {
               navigator
@@ -279,7 +279,10 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
               onClick={() => {
                 if (!selectedWish || !reportReason) return;
                 startReportTransition(async () => {
-                  const result = await reportWish(selectedWish.id, reportReason);
+                  const result = await reportWish(
+                    selectedWish.id,
+                    reportReason,
+                  );
                   if (result.success) {
                     setReportOpen(false);
                     setOpen(false);
