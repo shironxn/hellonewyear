@@ -6,11 +6,12 @@ import { revalidatePath } from "next/cache";
 
 export type Wish = {
   id: string;
+  name?: string;
   message: string;
   timestamp: number;
 };
 
-export async function createWish(message: string) {
+export async function createWish(message: string, name?: string) {
   if (!message || message.trim().length === 0) {
     return { success: false, error: "Message cannot be empty" };
   }
@@ -19,6 +20,7 @@ export async function createWish(message: string) {
     const dataRef = push(ref(database, "wishes"));
     await set(dataRef, {
       message: message.trim(),
+      name: name?.trim() || null,
       timestamp: serverTimestamp(),
     });
 
@@ -47,5 +49,20 @@ export async function getWishes(): Promise<Wish[]> {
   } catch (error) {
     console.error("Error fetching wishes:", error);
     return [];
+  }
+}
+
+export async function reportWish(wishId: string, reason?: string) {
+  try {
+    const reportRef = push(ref(database, "reports"));
+    await set(reportRef, {
+      wishId,
+      reason: reason?.trim() || "No reason provided",
+      timestamp: serverTimestamp(),
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error reporting wish:", error);
+    return { success: false, error: "Failed to report wish" };
   }
 }

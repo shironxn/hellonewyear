@@ -1,6 +1,6 @@
 "use client";
 
-import { createWish, type Wish } from "@/app/actions";
+import { createWish, reportWish, type Wish } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,11 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import confetti from "canvas-confetti";
-import { Heart, Loader2, Send, Sparkles } from "lucide-react";
+import { Heart, Loader2, Send, Sparkles, Flag } from "lucide-react";
 import React, { useState, useTransition, useRef } from "react";
 
 function WishForm({ onSuccess }: { onSuccess: () => void }) {
   const [wish, setWish] = useState("");
+  const [name, setName] = useState("");
   const [isPending, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -34,7 +35,7 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
     if (!wish.trim()) return;
 
     startTransition(async () => {
-      const result = await createWish(wish);
+      const result = await createWish(wish, name);
       if (result?.success) {
         setWish("");
         fireConfetti();
@@ -59,17 +60,21 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
           variant="outline"
           className="w-full py-6 text-lg md:text-xl"
           onClick={() => {
-            const shareText = `I just made a wish for ${new Date().getFullYear() + 1}! ✨ Make yours too: https://hellonewyear.vercel.app`;
+            const shareText = name
+              ? `${name} just made a wish for ${new Date().getFullYear() + 1}! Make yours too: https://hellonewyear.vercel.app`
+              : `I just made a wish for ${new Date().getFullYear() + 1}! Make yours too: https://hellonewyear.vercel.app`;
 
             if (navigator.share) {
-              navigator.share({
-                title: "New Year Wish",
-                text: shareText,
-                url: "https://hellonewyear.vercel.app",
-              }).catch(() => {});
+              navigator
+                .share({
+                  title: "New Year Wish",
+                  text: shareText,
+                  url: "https://hellonewyear.vercel.app",
+                })
+                .catch(() => {});
             } else {
               navigator.clipboard.writeText(shareText).then(() => {
-                alert("Copied to clipboard! 📋");
+                alert("Copied to clipboard!");
               });
             }
           }}
@@ -77,10 +82,7 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
           <Send className="mr-2 h-5 w-5" />
           Share to Friends
         </Button>
-        <Button
-          className="w-full py-6 text-lg md:text-xl"
-          onClick={onSuccess}
-        >
+        <Button className="w-full py-6 text-lg md:text-xl" onClick={onSuccess}>
           Close
         </Button>
       </div>
@@ -89,6 +91,13 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value.trimStart())}
+        placeholder="Your name (optional)"
+        disabled={isPending}
+        className="text-center md:text-left text-lg md:text-xl py-6"
+      />
       <Input
         value={wish}
         onChange={(e) => setWish(e.target.value)}
@@ -134,11 +143,15 @@ export function CreateWishModal() {
             Make a New Year Wish
           </DialogTitle>
           <DialogDescription className="text-base md:text-lg">
-            Let&apos;s start the year with big dreams! Your wish will inspire others.
+            Let&apos;s start the year with big dreams! Your wish will inspire
+            others.
           </DialogDescription>
         </DialogHeader>
         <div className="py-6">
-          <WishForm key={open ? "open" : "closed"} onSuccess={() => setOpen(false)} />
+          <WishForm
+            key={open ? "open" : "closed"}
+            onSuccess={() => setOpen(false)}
+          />
         </div>
       </DialogContent>
     </Dialog>
@@ -149,6 +162,9 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [isReporting, startReportTransition] = useTransition();
   const usedIdsRef = useRef<Set<string>>(new Set());
 
   const handleOpen = () => {
@@ -203,12 +219,95 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
             <p className="text-2xl md:text-3xl font-medium">
               &ldquo;{selectedWish?.message}&rdquo;
             </p>
+            <p className="text-lg md:text-xl text-muted-foreground mt-3 not-italic">
+              — {selectedWish?.name || "Someone"}
+            </p>
           </div>
           {selectedWish?.timestamp && (
             <p className="text-sm md:text-lg text-muted-foreground text-center">
               Shared on {new Date(selectedWish.timestamp).toLocaleDateString()}
             </p>
           )}
+          {selectedWish && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground text-sm w-full"
+              onClick={() => setReportOpen(true)}
+            >
+              <Flag className="mr-2 h-4 w-4" />
+              Report this wish
+            </Button>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={reportOpen} onOpenChange={setReportOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg md:text-xl">
+              Report this wish
+            </DialogTitle>
+            <DialogDescription className="text-base">
+              Help us keep this space safe and positive.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 py-2">
+            {[
+              "Inappropriate content",
+              "Spam",
+              "Offensive language",
+              "Other",
+            ].map((reason) => (
+              <button
+                key={reason}
+                onClick={() => setReportReason(reason)}
+                className={`w-full text-left px-4 py-3 rounded-lg border text-lg transition-colors ${
+                  reportReason === reason
+                    ? "border-primary bg-primary/10"
+                    : "border-border hover:bg-muted"
+                }`}
+              >
+                {reason}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-col gap-3 pt-2">
+            <Button
+              disabled={!reportReason || isReporting}
+              className="w-full py-6 text-lg"
+              onClick={() => {
+                if (!selectedWish || !reportReason) return;
+                startReportTransition(async () => {
+                  const result = await reportWish(selectedWish.id, reportReason);
+                  if (result.success) {
+                    setReportOpen(false);
+                    setOpen(false);
+                    setReportReason("");
+                    alert(
+                      "Wish reported. Thank you for keeping this space safe!",
+                    );
+                  }
+                });
+              }}
+            >
+              {isReporting ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                "Submit Report"
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full py-6 text-lg"
+              onClick={() => {
+                setReportOpen(false);
+                setReportReason("");
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
