@@ -65,9 +65,9 @@ export function CreateWishModal() {
         render={
           <button
             type="button"
-            className="group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full py-8 text-lg font-medium hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50"
+            className="group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 w-full py-10 md:py-12 text-xl md:text-2xl font-medium hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50"
           >
-            <Send className="pointer-events-none shrink-0 size-4 mr-2" />
+            <Send className="pointer-events-none shrink-0 size-6 mr-2" />
             Share Your Wish
           </button>
         }
@@ -109,33 +109,33 @@ export function GetWishModal({ wishes }: { wishes: Wish[] }) {
       <Button
         variant="outline"
         size="lg"
-        className="w-full py-8 text-lg font-medium"
+        className="w-full py-10 md:py-12 text-xl md:text-2xl font-medium"
         onClick={handleOpen}
         disabled={isPending || wishes.length === 0}
       >
         {isPending ? (
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          <Loader2 className="mr-2 h-6 w-6 animate-spin" />
         ) : (
-          <Sparkles className="mr-2 h-5 w-5" />
+          <Sparkles className="mr-2 h-6 w-6" />
         )}
         Receive a Wish
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+            <DialogTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold">
               <Sparkles className="h-5 w-5 text-primary" />A Special Wish for
               You
             </DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center p-8 bg-muted/50 rounded-lg min-h-160px text-center italic">
-            <p className="text-xl font-medium">
+          <div className="flex flex-col items-center justify-center p-8 bg-muted rounded-lg min-h-160px text-center italic">
+            <p className="text-2xl md:text-3xl font-medium">
               &ldquo;{selectedWish?.message}&rdquo;
             </p>
           </div>
           {selectedWish?.timestamp && (
-            <p className="text-xs text-muted-foreground text-center">
+            <p className="text-sm md:text-lg text-muted-foreground text-center">
               Shared on {new Date(selectedWish.timestamp).toLocaleDateString()}
             </p>
           )}

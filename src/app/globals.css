@@ -51,8 +51,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-montserrat: var(--font-montserrat), sans-serif;
-  --font-poppins: var(--font-poppins), sans-serif;
+  --font-sans: var(--font-sans), sans-serif;
 }
 
 @layer base {
@@ -150,4 +149,3 @@ body {
 html {
   @apply font-sans;
 }
-

@@ -1,8 +1,8 @@
 "use client";
 
-import { useAnimate } from "framer-motion";
-import { useEffect, useRef, useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAnimate } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const COUNTDOWN_FROM = `${new Date().getFullYear() + 1}-01-01`;
 
@@ -29,16 +29,14 @@ const CountdownItem = ({ unit, label }: { unit: Units; label: string }) => {
 
   return (
     <Card className="bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300">
-      <CardContent className="flex flex-col items-center justify-center p-6 gap-2">
-        <div className="relative w-full overflow-hidden text-center h-16 md:h-20 flex items-center justify-center">
-          <span
-            ref={ref}
-            className="block text-4xl md:text-5xl lg:text-6xl font-bold tabular-nums tracking-tighter"
-          >
-            {time}
-          </span>
-        </div>
-        <span className="text-xs md:text-sm font-medium uppercase tracking-widest text-muted-foreground">
+      <CardContent className="flex flex-col items-center justify-center gap-4 py-10 md:py-14">
+        <span
+          ref={ref}
+          className="block text-6xl md:text-7xl font-bold tabular-nums leading-none"
+        >
+          {time}
+        </span>
+        <span className="text-lg md:text-xl text-muted-foreground">
           {label}
         </span>
       </CardContent>
@@ -70,7 +68,7 @@ const useTimer = (unit: Units) => {
       newTime = Math.floor((distance % MINUTE) / SECOND);
     }
 
-    return unit === "Day" ? `${newTime}`.padStart(2, "0") : `${newTime}`.padStart(2, "0");
+    return `${newTime}`.padStart(2, "0");
   }, [unit]);
 
   const handleCountdown = useCallback(async () => {
@@ -80,7 +78,7 @@ const useTimer = (unit: Units) => {
       await animate(
         ref.current,
         { scale: [1, 1.1, 1], opacity: [1, 0.8, 1] },
-        { duration: 0.3 }
+        { duration: 0.3 },
       );
 
       timeRef.current = formattedTime;
@@ -99,4 +97,3 @@ const useTimer = (unit: Units) => {
 
   return { ref, time };
 };
-

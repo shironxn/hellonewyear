@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
-import { Montserrat, Inter } from "next/font/google";
-import "./globals.css";
 import { Footer } from "@/components/footer";
-import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
+import { Caveat } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-const montserrat = Montserrat({
+const caveat = Caveat({
   subsets: ["latin"],
-  variable: "--font-montserrat",
-  weight: ["400", "600", "700"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,9 +26,8 @@ export default function RootLayout({
     <html lang="en" className="antialiased" suppressHydrationWarning>
       <body
         className={cn(
-          inter.variable,
-          montserrat.variable,
-          "font-sans min-h-screen bg-background text-foreground flex flex-col items-center"
+          caveat.variable,
+          "font-sans min-h-screen bg-background text-foreground flex flex-col items-center",
         )}
       >
         <ThemeProvider>
