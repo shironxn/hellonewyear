@@ -100,7 +100,7 @@ function InfoModal() {
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-transparent">
+    <nav className="w-full flex items-center justify-between px-6 py-4 bg-transparent">
       <span className="text-xl font-bold">HNY</span>
       <div className="flex items-center gap-2">
         <InfoModal />

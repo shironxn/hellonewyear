@@ -7,7 +7,7 @@ export default async function Home() {
   const wishes = await getWishes();
 
   return (
-    <main className="min-h-screen bg-background text-foreground py-8 sm:py-12 px-4 sm:px-6 lg:px-8 pt-24">
+    <main className="min-h-screen bg-background text-foreground py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto flex flex-col items-center gap-16 md:gap-20">
         <header className="flex flex-col items-center text-center gap-3 sm:gap-4 w-full">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
