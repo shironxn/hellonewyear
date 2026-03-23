@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer";
+import { JsonLd } from "@/components/json-ld";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -13,9 +14,12 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Hello New Year — Countdown & Wishes",
+  title: {
+    default: "Hello New Year — Countdown & Wishes",
+    template: "%s | Hello New Year",
+  },
   description:
-    "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
+    "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together with our interactive New Year countdown.",
   keywords: [
     "new year",
     "countdown",
@@ -23,17 +27,34 @@ export const metadata: Metadata = {
     "2027",
     "hello new year",
     "new year wishes",
+    "new year countdown",
+    "celebration",
+    "happy new year",
   ],
   authors: [{ name: "Shiron", url: "https://www.shironstudio.com" }],
   creator: "Shiron",
-  metadataBase: new URL("https://hellonewyear.vercel.app"),
+  publisher: "Shiron Studio",
+  metadataBase: new URL("https://hny.shironstudio.com"),
+  alternates: {
+    canonical: "https://hny.shironstudio.com",
+  },
   openGraph: {
     type: "website",
-    url: "https://hellonewyear.vercel.app",
+    locale: "en_US",
+    url: "https://hny.shironstudio.com",
     title: "Hello New Year — Countdown & Wishes",
     description:
       "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
     siteName: "Hello New Year",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1920,
+        height: 1080,
+        alt: "Hello New Year - New Year Countdown & Wishes",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -41,11 +62,25 @@ export const metadata: Metadata = {
     description:
       "Welcome the new year with gratitude and hope. Share your wishes, receive inspiration from others, and celebrate together.",
     creator: "@shironxn",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -61,6 +96,7 @@ export default function RootLayout({
           "font-sans min-h-screen bg-background text-foreground flex flex-col items-center",
         )}
       >
+        <JsonLd />
         <ThemeProvider>
           <Navbar />
           <div className="flex-1 w-full flex flex-col items-center">
