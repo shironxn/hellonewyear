@@ -61,15 +61,15 @@ function WishForm({ onSuccess }: { onSuccess: () => void }) {
           className="w-full py-6 text-lg md:text-xl"
           onClick={() => {
             const shareText = name
-              ? `${name} just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hellonewyear.vercel.app`
-              : `I just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hellonewyear.vercel.app`;
+              ? `${name} just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hny.shironstudio.com`
+              : `I just made a New Year wish for ${new Date().getFullYear() + 1} ✨\nWhat's your wish? Share it here: https://hny.shironstudio.com`;
 
             if (navigator.share) {
               navigator
                 .share({
                   title: "New Year Wish",
                   text: shareText,
-                  url: "https://hellonewyear.vercel.app",
+                  url: "https://hny.shironstudio.com",
                 })
                 .catch(() => {});
             } else {
