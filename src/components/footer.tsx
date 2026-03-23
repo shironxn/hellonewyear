@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="w-full flex items-center justify-center p-6 text-muted-foreground text-base md:text-lg">
       <p className="flex items-center justify-center gap-1.5">
         Made with
-        <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+        <Heart className="h-4 w-4 text-primary fill-primary" />
         by
         <Link
           href="https://www.shironstudio.com"
